@@ -1,36 +1,35 @@
 import React from 'react';
 import { useAuth0, Auth0Provider } from '@auth0/auth0-react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import TaskDashboard from './pages/TaskDashboardPage';
 import TaskDetails from './pages/TaskDetailsPage';
 import TaskForm from './components/TaskForm';
 import LoginPage from './pages/LoginPage';
-import CallbackPage from './pages/CallBackPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { TaskProvider } from './context/TaskContext';
-import { Link } from 'react-router-dom';
 
 const PrivateRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated, isLoading } = useAuth0();
-
   if (isLoading) return <div>Loading...</div>;
-
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 const App: React.FC = () => {
+  const { logout, isAuthenticated } = useAuth0();
+
   return (
     <Auth0Provider
       domain={import.meta.env.VITE_AUTH0_DOMAIN || ''}
       clientId={import.meta.env.VITE_AUTH0_CLIENT_ID || ''}
       authorizationParams={{
-        redirect_uri: window.location.origin + '/callback',
+        redirect_uri: window.location.origin,
       }}
     >
       <TaskProvider>
         <Router>
           <div className="App">
+            {/* NAVBAR */}
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
               <Link className="navbar-brand" to="/tasks">Task Manager</Link>
               <div className="collapse navbar-collapse">
@@ -41,16 +40,32 @@ const App: React.FC = () => {
                   <li className="nav-item">
                     <Link className="nav-link" to="/tasks/create">Create Task</Link>
                   </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/tasks/details">Task Details</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/login">Login</Link>
-                  </li>
+                  {!isAuthenticated && (
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/login">Login</Link>
+                    </li>
+                  )}
+                  {isAuthenticated && (
+                    <li className="nav-item">
+                      <button
+                        className="btn btn-link nav-link"
+                        onClick={() =>
+                          logout({
+                            logoutParams: {
+                              returnTo: window.location.origin + '/login',
+                            },
+                          })
+                        }
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  )}
                 </ul>
               </div>
             </nav>
 
+            {/* ROUTES */}
             <div className="container mt-4">
               <Routes>
                 <Route path="/" element={<HomePage />} />
@@ -70,15 +85,15 @@ const App: React.FC = () => {
                     </PrivateRoute>
                   }
                 />
-                <Route path="/tasks/details/:id"
-                element={
-                  <PrivateRoute>
-                    <TaskDetails />
-                  </PrivateRoute>
-                }
-              />
+                <Route
+                  path="/tasks/details/:id"
+                  element={
+                    <PrivateRoute>
+                      <TaskDetails />
+                    </PrivateRoute>
+                  }
+                />
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/callback" element={<CallbackPage />} />
               </Routes>
             </div>
           </div>
