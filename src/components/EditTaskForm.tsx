@@ -13,9 +13,9 @@ const EditTaskForm: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      const foundTask = tasks.find((task) => Task.id === id);
-      if (foundTask) {
-        setTask(foundTask);  
+      const taskToEdit = tasks.find((task) => task.id === id);
+      if (taskToEdit) {
+        setTask(taskToEdit);
       }
     }
   }, [id, tasks]);
