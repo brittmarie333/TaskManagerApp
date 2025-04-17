@@ -1,0 +1,102 @@
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: white; 
+  color: black; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #008080; 
+}
+
+button, .btn {
+  background-color: #008080; 
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover, .btn:hover {
+  background-color: #004d40;
+}
+
+code {
+  font-family: 'Source Code Pro', Menlo, Monaco, Consolas, 'Courier New', monospace;
+  background-color: #f4f4f4; 
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.task {
+  background-color: #f9f9f9; 
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.task.completed {
+  background-color: #e0f7fa;
+  text-decoration: line-through;
+}
+
+input[type="text"], input[type="checkbox"], textarea {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+input[type="text"]:focus, textarea:focus {
+  border-color: #008080; 
+  outline: none;
+}
+
+/*styling for cards*/
+.card {
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+  margin: 10px 0;
+}
+
+.btn {
+  background-color: #008080;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #004d40;
+}
