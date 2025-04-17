@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 import CallbackPage from './pages/CallBackPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { TaskProvider } from './context/TaskContext';
+import { Link } from 'react-router-dom';
 
 // App component
 const App: React.FC = () => {
@@ -39,17 +40,17 @@ const App: React.FC = () => {
         <Router>
           <div className="App">
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-              <a className="navbar-brand" href="/">Task Manager</a>
+              <Link className="nav-link" to="/tasks/manager">Task Manager</Link>
               <div className="collapse navbar-collapse">
                 <ul className="navbar-nav">
                   <li className="nav-item">
-                    <a className="nav-link" href="/tasks">Dashboard</a>
+                    <Link className="nav-link" to="/tasks">Dashboard</Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="/tasks/create">Create Task</a>
+                    <Link className="nav-link" to="/tasks/create">Create Task</Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="/login">Login</a>
+                    <Link className="nav-link" to="/login">Login</Link>
                   </li>
                 </ul>
               </div>
