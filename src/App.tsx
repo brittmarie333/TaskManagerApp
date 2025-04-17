@@ -3,6 +3,7 @@ import { useAuth0, Auth0Provider } from '@auth0/auth0-react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import TaskDashboard from './pages/TaskDashboardPage';
+import TaskDetails from './pages/TaskDetailsPage';
 import TaskForm from './components/TaskForm';
 import LoginPage from './pages/LoginPage';
 import CallbackPage from './pages/CallBackPage';
@@ -41,6 +42,9 @@ const App: React.FC = () => {
                     <Link className="nav-link" to="/tasks/create">Create Task</Link>
                   </li>
                   <li className="nav-item">
+                    <Link className="nav-link" to="/tasks/details">Task Details</Link>
+                  </li>
+                  <li className="nav-item">
                     <Link className="nav-link" to="/login">Login</Link>
                   </li>
                 </ul>
@@ -66,6 +70,13 @@ const App: React.FC = () => {
                     </PrivateRoute>
                   }
                 />
+                <Route path="/tasks/details/:id"
+                element={
+                  <PrivateRoute>
+                    <TaskDetails />
+                  </PrivateRoute>
+                }
+              />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/callback" element={<CallbackPage />} />
               </Routes>

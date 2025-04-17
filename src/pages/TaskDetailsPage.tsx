@@ -31,7 +31,7 @@ const TaskDetailsPage: React.FC = () => {
         <div className="card-body">
           <h2 className="card-title">{task.title}</h2>
           <p className="card-text">{task.description}</p>
-          <button className="btn btn-primary" onClick={() => navigate('/tasks')}>
+          <button className="btn" onClick={() => navigate('/tasks')}>
             Return to Dashboard
           </button>
         </div>

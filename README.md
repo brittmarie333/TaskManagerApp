@@ -29,46 +29,72 @@ Welcome to the Task Manager app! This simple application allows users to manage 
 
 
 ##HomePage
-![welcome message](homeimg.jpg)
+```Tsx 
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-##LoginPage
-![login page](loginimage.jpg)
-I have also provided my callback page below: 
-
-```
-const CallbackPage: React.FC = () => {
-  const { handleRedirectCallback, isAuthenticated, error } = useAuth0();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const processAuthCallback = async () => {
-      try {
-        await handleRedirectCallback(); // Process Auth0 callback
-        navigate('/tasks'); // Redirect to the task dashboard (or any protected route)
-      } catch (e) {
-        console.error('Error processing the callback', e);
-        navigate('/login'); // Redirect back to login if something goes wrong
-      }
-    };
-
-    processAuthCallback();
-  }, [handleRedirectCallback, navigate]);
-
+const HomePage: React.FC = () => {
   return (
     <div>
-      <p>Processing authentication...</p>
-      {error && <p style={{ color: 'red' }}>Error: {error.message}</p>}
+      <h1>Welcome to Your Task Manager!</h1>
+      <p>
+        This is a simple Task Manager app that allows you to:
+      </p>
+      <ul>
+        <li>Store tasks you need to complete</li>
+        <li>Update your tasks when your plans change</li>
+        <li>Delete tasks that are no longer needed</li>
+      </ul>
+      <p>
+        All your tasks can be managed at your convenience, whenever you need to!
+      </p>
+      <p>
+        If you’d like to get started, please <Link to="/login">log in</Link> to access your task dashboard.
+      </p>
     </div>
   );
 };
 
-export default CallbackPage;
+export default HomePage;
+
+
+```
+
+
+##LoginPage
+
+```
+import React, { useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from 'react-router-dom';
+
+const LoginPage: React.FC = () => {
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/tasks');
+    }
+  }, [isAuthenticated, navigate]);
+
+  return (
+    <div>
+      <h2>Login to access your task manager!</h2>
+      <button onClick={() => loginWithRedirect()}>
+        Login Here!
+      </button>
+    </div>
+  );
+};
+
+export default LoginPage;
 
 ```
 
 
 ##TaskDashboardPage
-This page will show your tasks but will also allow you to add a task w/pop up taskform
+This page will show your tasks but will also allow you to add a task.
 ``` 
 
 const TaskDashboard: React.FC = () => {
@@ -120,10 +146,12 @@ const TaskDashboard: React.FC = () => {
   );
 };
 
+export default TaskDashboard;
+
 ```
 
 ##TaskDetailsPage
-This page shows current tasks and will take you back to dashboard if no tasks are available. I set this page up to have uniform display with the dashboard.
+
 ```
 const TaskDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // grab task id from the URL
@@ -161,6 +189,8 @@ const TaskDetailsPage: React.FC = () => {
   );
 };
 
+export default TaskDetailsPage;
+
 ```
 
 ##Components
@@ -176,9 +206,9 @@ const EditTaskForm: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      const foundTask = tasks.find((task) => task.id === id);
-      if (foundTask) {
-        setTask(foundTask);  
+      const taskToEdit = tasks.find((task) => task.id === id);
+      if (taskToEdit) {
+        setTask(taskToEdit);
       }
     }
   }, [id, tasks]);
@@ -229,12 +259,19 @@ const EditTaskForm: React.FC = () => {
   );
 };
 
-
 ```
 
 ##Context/Interface
 Since Interface is straightforward and simple I have provided part of my Context code to showcase a custom hook and functions! 
 ```
+interface TaskContextType {
+  tasks: Task[];  
+  addTask: (task: Task) => void;  
+  updateTask: (updatedTask: Task) => void;  
+  deleteTask: (id: string) => void; 
+}
+const TaskContext = createContext<TaskContextType | undefined>(undefined);
+
 // custom hook 
 export const useTaskContext = () => {
   const context = useContext(TaskContext);
@@ -276,6 +313,13 @@ export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
   const deleteTask = (id: string) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
+
+  return (
+    <TaskContext.Provider value={{ tasks, addTask, updateTask, deleteTask }}>
+      {children}
+    </TaskContext.Provider>
+  );
+};
 
 ```
 

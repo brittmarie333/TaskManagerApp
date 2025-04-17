@@ -1,12 +1,11 @@
-
 import React, { useState } from 'react';
 import { useTaskContext } from '../context/TaskContext';  
 import TaskForm from '../components/TaskForm';  
-
+import { Link } from 'react-router-dom'; // ✅ Import Link
 
 const TaskDashboard: React.FC = () => {
-  const { tasks, deleteTask } = useTaskContext();  // get tasks and deleteTask function from context
-  const [showForm, setShowForm] = useState(false);  // state to show/hide task form
+  const { tasks, deleteTask } = useTaskContext();
+  const [showForm, setShowForm] = useState(false);
 
   const handleShowForm = () => {
     setShowForm(true); 
@@ -25,7 +24,6 @@ const TaskDashboard: React.FC = () => {
       <h1>Task Dashboard</h1>
       <button onClick={handleShowForm}>Add Task</button>
 
-      {/* show task form (if showForm is true) */}
       {showForm && (
         <div>
           <TaskForm />
@@ -43,6 +41,12 @@ const TaskDashboard: React.FC = () => {
               <li key={task.id}>
                 <h3>{task.title}</h3>
                 <p>{task.description}</p>
+                
+                {/* ✅ View Details link */}
+                <Link to={`/tasks/details/${task.id}`}>
+                  <button>View Details</button>
+                </Link>
+
                 <button onClick={() => handleDelete(task.id)}>Delete</button>
               </li>
             ))}
